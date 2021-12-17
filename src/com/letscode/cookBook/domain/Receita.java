@@ -17,6 +17,11 @@ public class Receita {
         this.ingredientes = new ArrayList<>();
         this.nome = nome;
         this.categoria = categoria;
+        this.modoPreparo = new String[]{};
+    }
+
+    public Receita(){
+        this.ingredientes = new ArrayList<>();
     }
 
     public String getNome() {
@@ -55,7 +60,7 @@ public class Receita {
         return ingredientes;
     }
 
-    public void setIngredientes(Ingrediente[] ingredientes) {
+    public void setIngredientes(List<Ingrediente> ingredientes) {
         for (Ingrediente item : ingredientes) {
             this.ingredientes.add(item);
         }
@@ -92,6 +97,10 @@ public class Receita {
         String tempo = horas > 0 ? horas + " horas " : "";
         tempo += minutos > 0 ? minutos + " minutos " : "";
         tempo += segundos > 0 ? segundos + " segundos " : "";
-        return String.format("%s%n\t%s%n%nRendimento: %s%nTempo: %s%nIngredientes:%n%s%nModo de preparo:%n%s", nome, categoria, rendimento, tempo, ingredientes, modoPreparo);
+        String txtModoPreparo = "";
+        for (String item: this.modoPreparo) {
+            txtModoPreparo = txtModoPreparo.concat(item);
+        }
+        return String.format("%s%n\t%s%n%nRendimento: %s%nTempo: %s%nIngredientes:%n%s%nModo de preparo:%n%s", nome, categoria, rendimento, tempo, ingredientes, txtModoPreparo);
     }
 }

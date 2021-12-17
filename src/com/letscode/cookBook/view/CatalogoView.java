@@ -7,10 +7,12 @@ import com.letscode.cookBook.enums.Categoria;
 import java.util.Scanner;
 
 public class CatalogoView {
+
     private final Receita NONE_FOUND = new Receita("Nenhuma receita encontrada", Categoria.PRATO_UNICO);
     private Receita receita;
-    Catalogo controller;
+    Catalogo controller = new Catalogo();
     private int curIndex = -1;
+    Scanner scanner = new Scanner(System.in);
 
     private void showHeader() {
         ScreenUtil.printTextLine("", 80, true, '=');
@@ -29,17 +31,29 @@ public class CatalogoView {
     private void showAnterior() {
         if (curIndex > 0) {
             this.receita = controller.getReceita(curIndex - 1);
-            if (receita != null) curIndex--;
+            if (receita != null) {
+                curIndex--;
+                showReceita(this.receita);
+            }
         }
+        show();
     }
 
     private void showSeguinte() {
         this.receita = controller.getReceita(curIndex + 1);
-        if (receita != null) curIndex++;
+        if (receita != null){
+            curIndex++;
+            showReceita(this.receita);
+        }
+        show();
+
     }
 
     private void add() {
         //TODO: Implement Add
+        NovaReceitaView novaReceita = new NovaReceitaView();
+        this.controller.add(novaReceita.getReceita());
+        show();
     }
 
     private void del() {
@@ -48,9 +62,17 @@ public class CatalogoView {
         }
     }
 
+    private void search(){
+        System.out.println("Digite o nome da receita:");
+        String nomeReceita = scanner.next();
+        this.receita = this.controller.getReceita(nomeReceita);
+        showReceita(this.receita);
+        show();
+    }
+
     public void show() {
         showHeader();
-        showReceita(receita == null ? NONE_FOUND : receita);
+        showReceita(receita == null ? NONE_FOUND : this.receita);
         ScreenUtil.printTextLine("", 80, true, '=');
         ScreenUtil.printTextLine("P: Receita anterior", 80, true);
         ScreenUtil.printTextLine("N: Receita seguinte", 80, true);
@@ -77,6 +99,7 @@ public class CatalogoView {
                     break;
                 case "S":
                     //TODO: Implement Search
+                    search();
                     break;
                 default:
                     ScreenUtil.printTextLine("Opção inválida", 80);
